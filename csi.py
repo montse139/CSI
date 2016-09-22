@@ -5,7 +5,7 @@ print "We found DNA on the spoon that was used to eat the ice cream."
 test_run = raw_input("Do you want to test the DNA? (yes/no)")
 
 hair_color = {"test": "hair color", "black": "CCAGCAATCGC", "brown": "GCCAGTGCCG", "blond": "TTAGCTATCGC"}
-facial_shape = {"test": "facial shape", "square": "GCCACGG", "round": "ACCACAA", "oval": "AGGCCTCA"}
+face_shape = {"test": "face shape", "square": "GCCACGG", "round": "ACCACAA", "oval": "AGGCCTCA"}
 eye_color = {"test": "eye color", "blue": "TTGTGGTGGC", "green": "GGGAGGTGGC", "brown": "AAGTAGTGAC"}
 gender = {"test": "gender", "female": "TGAAGGACCTTC", "male": "TGCAGGAACTTC"}
 race = {"test": "race", "white": "AAAACCTCA", "black": "CGACTACAG", "asian": "CGCGGGCCG"}
@@ -15,32 +15,32 @@ Larisa = {"name": "Larisa", "gender": "female", "race": "white", "hair color": "
 Matej = {"name": "Matej", "gender": "male", "race": "white", "hair color": "black", "eye color": "blue", "face shape": "oval"}
 Miha = {"name": "Miha", "gender": "male", "race": "white", "hair color": "brown", "eye color": "green", "face shape": "square"}
 
-#suspects = [Eva, Larisa, Matej, Miha]
-guilty_person = {"gender": "male", "race": "white", "hair_color": "brown", "eye_color": "green", "facial_shape": "square"}
 guilty = {}
 
 if test_run == "yes":
     with open("dna.txt", "r") as myfile:
         dna = myfile.read()
+    print "DNA match:"
 
     def check_dna(dict):
         for key in dict:
             if dict[key] in dna:
-                print "- " + dict["test"] + ". " + "DNA match: " + key
+                guilty[dict["test"]] = key
+                print "- " + dict["test"] + ": " + key
 
-check_dna(hair_color)
-check_dna(facial_shape)
-check_dna(eye_color)
+    def suspect_check(dict):
+        diff = set(guilty.iteritems()) - set(dict.iteritems())
+        if len(diff) > int(1):
+            print dict["name"] + " is innocent (%s discordancies)" % len(diff)
+        else:
+            print dict["name"] + " DID IT!!!"
+
+
 check_dna(gender)
 check_dna(race)
-
-#for item in guilty:
-    #print item
-
-def suspect_check(dict):
-    for key in dict:
-        if dict[1:] == guilty_person[0:]:
-            print dict["name"] + " is Guilty!"
+check_dna(hair_color)
+check_dna(eye_color)
+check_dna(face_shape)
 
 
 suspect_check(Larisa)
